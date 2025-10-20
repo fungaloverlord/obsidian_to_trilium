@@ -1,0 +1,301 @@
+/* Root variables for colors - Obsidian-style callouts */
+:root {
+    /* Obsidian callout colors */
+    --callout-note: 68, 138, 255;           /* Blue */
+    --callout-abstract: 0, 176, 255;        /* Cyan */
+    --callout-info: 0, 184, 212;            /* Light cyan */
+    --callout-tip: 0, 191, 165;             /* Teal */
+    --callout-success: 0, 200, 83;          /* Green */
+    --callout-question: 100, 221, 23;       /* Lime */
+    --callout-warning: 255, 145, 0;         /* Orange */
+    --callout-failure: 255, 82, 82;         /* Red */
+    --callout-danger: 255, 23, 68;          /* Deep red */
+    --callout-bug: 245, 0, 87;              /* Pink red */
+    --callout-example: 124, 77, 255;        /* Purple */
+    --callout-quote: 158, 158, 158;         /* Gray */
+
+    /* Base colors */
+    --callout-background: 255, 255, 255;
+    --callout-text: 33, 33, 33;
+    --main-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --callout-background: 30, 30, 30;
+        --callout-text: 230, 230, 230;
+    }
+}
+
+/* Base callout/admon styling - Obsidian style */
+.admon, aside.admon {
+    position: relative;
+    margin: 1.5em 0;
+    padding: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: rgba(var(--callout-color), 0.1);
+    border: 1px solid rgba(var(--callout-color), 0.4);
+    font-family: var(--main-font-family);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Callout title bar */
+.admon-title, .admon > p:first-child {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin: 0;
+    padding: 0.75em 1em;
+    font-weight: 600;
+    color: rgb(var(--callout-color));
+    background-color: rgba(var(--callout-color), 0.1);
+    border-bottom: 1px solid rgba(var(--callout-color), 0.2);
+}
+
+/* Callout content */
+.admon > p:not(:first-child),
+.admon > ul,
+.admon > ol,
+.admon > blockquote,
+.admon > pre,
+.admon > div {
+    margin: 0;
+    padding: 1em 1em;
+    color: rgb(var(--callout-text));
+}
+
+.admon > p:not(:first-child):last-child {
+    padding-bottom: 1em;
+}
+
+/* Icon styling (before title) */
+.admon-title::before,
+.admon > p:first-child::before {
+    content: "";
+    display: inline-block;
+    font-size: 1.2em;
+    flex-shrink: 0;
+    margin-right: 0.3em;
+}
+
+/* ===== CALLOUT TYPE COLORS ===== */
+
+/* Note (blue) - default */
+.admon.note,
+aside.admon.note {
+    --callout-color: var(--callout-note);
+}
+.admon.note .admon-title::before,
+.admon.note > p:first-child::before {
+    content: "📝";
+}
+
+/* Abstract/Summary (cyan) */
+.admon.abstract,
+.admon.summary,
+.admon.tldr,
+aside.admon.abstract {
+    --callout-color: var(--callout-abstract);
+}
+.admon.abstract .admon-title::before,
+.admon.abstract > p:first-child::before,
+.admon.summary .admon-title::before,
+.admon.summary > p:first-child::before,
+.admon.tldr .admon-title::before,
+.admon.tldr > p:first-child::before {
+    content: "📄";
+}
+
+/* Info (light cyan) */
+.admon.info,
+aside.admon.info {
+    --callout-color: var(--callout-info);
+}
+.admon.info .admon-title::before,
+.admon.info > p:first-child::before {
+    content: "ℹ️";
+}
+/* Todo (light cyan) */
+.admon.todo {
+    --callout-color: var(--callout-info);
+}
+.admon.todo .admon-title::before,
+.admon.todo > p:first-child::before {
+    content: "⏰";
+}
+
+/* Tip/Hint (teal) */
+.admon.tip,
+.admon.hint,
+.admon.important,
+aside.admon.tip,
+aside.admon.important {
+    --callout-color: var(--callout-tip);
+}
+.admon.tip .admon-title::before,
+.admon.tip > p:first-child::before,
+.admon.hint .admon-title::before,
+.admon.hint > p:first-child::before,
+.admon.important .admon-title::before,
+.admon.important > p:first-child::before {
+    content: "💡";
+}
+
+/* Success/Check/Done (green) */
+.admon.success,
+.admon.check,
+.admon.done {
+    --callout-color: var(--callout-success);
+}
+.admon.success .admon-title::before,
+.admon.success > p:first-child::before,
+.admon.check .admon-title::before,
+.admon.check > p:first-child::before,
+.admon.done .admon-title::before,
+.admon.done > p:first-child::before {
+    content: "✅";
+}
+
+/* Question/Help/FAQ (lime) */
+.admon.question,
+.admon.help,
+.admon.faq {
+    --callout-color: var(--callout-question);
+}
+.admon.question .admon-title::before,
+.admon.question > p:first-child::before,
+.admon.help .admon-title::before,
+.admon.help > p:first-child::before,
+.admon.faq .admon-title::before,
+.admon.faq > p:first-child::before {
+    content: "❓";
+}
+
+/* Warning/Caution/Attention (orange) */
+.admon.warning,
+.admon.caution,
+.admon.attention,
+aside.admon.warning,
+aside.admon.caution {
+    --callout-color: var(--callout-warning);
+}
+.admon.warning .admon-title::before,
+.admon.warning > p:first-child::before,
+.admon.caution .admon-title::before,
+.admon.caution > p:first-child::before,
+.admon.attention .admon-title::before,
+.admon.attention > p:first-child::before {
+    content: "⚠️";
+}
+
+/* Failure/Fail/Missing (red) */
+.admon.failure,
+.admon.fail,
+.admon.missing {
+    --callout-color: var(--callout-failure);
+}
+.admon.failure .admon-title::before,
+.admon.failure > p:first-child::before,
+.admon.fail .admon-title::before,
+.admon.fail > p:first-child::before,
+.admon.missing .admon-title::before,
+.admon.missing > p:first-child::before {
+    content: "❌";
+}
+
+/* Danger/Error (deep red) */
+.admon.danger,
+.admon.error {
+    --callout-color: var(--callout-danger);
+}
+.admon.danger .admon-title::before,
+.admon.danger > p:first-child::before,
+.admon.error .admon-title::before,
+.admon.error > p:first-child::before {
+    content: "⚡";
+}
+
+/* Bug (pink red) */
+.admon.bug {
+    --callout-color: var(--callout-bug);
+}
+.admon.bug .admon-title::before,
+.admon.bug > p:first-child::before {
+    content: "🐛";
+}
+
+/* Example (purple) */
+.admon.example {
+    --callout-color: var(--callout-example);
+}
+.admon.example .admon-title::before,
+.admon.example > p:first-child::before {
+    content: "📋";
+}
+
+/* Quote/Cite (gray) */
+.admon.quote,
+.admon.cite {
+    --callout-color: var(--callout-quote);
+}
+.admon.quote .admon-title::before,
+.admon.quote > p:first-child::before,
+.admon.cite .admon-title::before,
+.admon.cite > p:first-child::before {
+    content: "💬";
+}
+
+/* Nested lists and formatting inside callouts */
+.admon ul,
+.admon ol {
+    padding-left: 1.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.admon li {
+    margin: 0.25em 0;
+}
+
+.admon code {
+    background-color: rgba(var(--callout-color), 0.15);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.9em;
+}
+
+.admon pre {
+    background-color: rgba(var(--callout-color), 0.1);
+    padding: 1em;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+.admon strong {
+    font-weight: 700;
+    color: rgb(var(--callout-color));
+}
+
+/* Collapsible callouts (future enhancement) */
+.admon.collapsible .admon-title {
+    cursor: pointer;
+    user-select: none;
+}
+
+.admon.collapsible .admon-title::after {
+    content: "▼";
+    margin-left: auto;
+    font-size: 0.8em;
+    transition: transform 0.2s ease;
+}
+
+.admon.collapsible.collapsed .admon-title::after {
+    transform: rotate(-90deg);
+}
+
+.admon.collapsible.collapsed > *:not(.admon-title) {
+    display: none;
+}

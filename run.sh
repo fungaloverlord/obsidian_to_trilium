@@ -1,0 +1,2 @@
+#!/bin/bash
+/home/fungal_overlord/Documents/python/.venv/bin/python /home/fungal_overlord/Documents/python/md_to_trilium.py --token 9NOzNsvFz2oH_p6uSvOqU/lMrVOtB7vaFhdqQSYLUs8TSijMw2U3Axto= /home/fungal_overlord/Documents/Philosophy

@@ -1,0 +1,85 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "md-to-trilium"
+version = "1.0.0"
+description = "Convert Markdown files to Trilium Notes with hierarchy preservation, wiki links, and Obsidian-style callouts"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "fungal_overlord"}
+]
+keywords = ["markdown", "trilium", "notes", "converter", "obsidian", "wiki-links"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Office/Business",
+    "Topic :: Text Processing :: Markup",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "trilium-py>=1.2.6",
+    "markdown2>=2.4.0",
+    "PyYAML>=6.0",
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+]
+
+[project.scripts]
+md-to-trilium = "md_to_trilium:main"
+
+[project.urls]
+Homepage = "https://github.com/yourusername/md-to-trilium"
+Documentation = "https://github.com/yourusername/md-to-trilium/blob/main/README.md"
+Repository = "https://github.com/yourusername/md-to-trilium"
+Issues = "https://github.com/yourusername/md-to-trilium/issues"
+
+[tool.setuptools]
+py-modules = ["md_to_trilium", "md_converter", "directory_scanner", "trilium_uploader"]
+
+[tool.black]
+line-length = 100
+target-version = ['py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"

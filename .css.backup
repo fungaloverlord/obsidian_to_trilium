@@ -1,0 +1,290 @@
+/* Root variables for colors - Obsidian-style callouts */
+:root {
+    /* Obsidian callout colors */
+    --callout-note: 68, 138, 255;           /* Blue */
+    --callout-abstract: 0, 176, 255;        /* Cyan */
+    --callout-info: 0, 184, 212;            /* Light cyan */
+    --callout-tip: 0, 191, 165;             /* Teal */
+    --callout-success: 0, 200, 83;          /* Green */
+    --callout-question: 100, 221, 23;       /* Lime */
+    --callout-warning: 255, 145, 0;         /* Orange */
+    --callout-failure: 255, 82, 82;         /* Red */
+    --callout-danger: 255, 23, 68;          /* Deep red */
+    --callout-bug: 245, 0, 87;              /* Pink red */
+    --callout-example: 124, 77, 255;        /* Purple */
+    --callout-quote: 158, 158, 158;         /* Gray */
+
+    /* Base colors */
+    --callout-background: 255, 255, 255;
+    --callout-text: 33, 33, 33;
+    --main-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --callout-background: 30, 30, 30;
+        --callout-text: 230, 230, 230;
+    }
+}
+
+/* Base callout/admon styling - Obsidian style */
+.admon, aside.admon {
+    position: relative;
+    margin: 1.5em 0;
+    padding: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: rgba(var(--callout-color), 0.1);
+    border: 1px solid rgba(var(--callout-color), 0.4);
+    font-family: var(--main-font-family);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Callout title bar */
+.admon-title, .admon > p:first-child {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin: 0;
+    padding: 0.75em 1em;
+    font-weight: 600;
+    color: rgb(var(--callout-color));
+    background-color: rgba(var(--callout-color), 0.1);
+    border-bottom: 1px solid rgba(var(--callout-color), 0.2);
+}
+
+/* Callout content */
+.admon > p:not(:first-child),
+.admon > ul,
+.admon > ol,
+.admon > blockquote,
+.admon > pre,
+.admon > div {
+    margin: 0;
+    padding: 1em 1em;
+    color: rgb(var(--callout-text));
+}
+
+.admon > p:not(:first-child):last-child {
+    padding-bottom: 1em;
+}
+
+/* Icon styling (before title) */
+.admon-title::before,
+.admon > p:first-child::before {
+    content: "";
+    display: inline-block;
+    font-size: 1.2em;
+    flex-shrink: 0;
+    margin-right: 0.3em;
+}
+
+/* ===== CALLOUT TYPE COLORS ===== */
+
+/* Note (blue) - default */
+.admon.note,
+aside.admon.note {
+    --callout-color: var(--callout-note);
+}
+.admon.note .admon-title::before,
+.admon.note > p:first-child::before {
+    content: "📝";
+}
+
+/* Abstract/Summary (cyan) */
+.admon.abstract,
+.admon.summary,
+.admon.tldr,
+aside.admon.abstract {
+    --callout-color: var(--callout-abstract);
+}
+.admon.abstract .admon-title::before,
+.admon.abstract > p:first-child::before,
+.admon.summary .admon-title::before,
+.admon.summary > p:first-child::before,
+.admon.tldr .admon-title::before,
+.admon.tldr > p:first-child::before {
+    content: "📄";
+}
+
+/* Info (light cyan) */
+.admon.info,
+aside.admon.info {
+    --callout-color: var(--callout-info);
+}
+.admon.info .admon-title::before {
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>');
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>');
+}
+
+/* Todo (light cyan) */
+.admon.todo {
+    --callout-color: var(--callout-info);
+}
+.admon.todo .admon-title::before {
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>');
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>');
+}
+
+/* Tip/Hint (teal) */
+.admon.tip,
+.admon.hint,
+.admon.important,
+aside.admon.tip,
+aside.admon.important {
+    --callout-color: var(--callout-tip);
+}
+.admon.tip .admon-title::before,
+.admon.hint .admon-title::before,
+.admon.important .admon-title::before {
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M15 2a5 5 0 0 1 0 10 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 0-10"/></svg>');
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M15 2a5 5 0 0 1 0 10 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 0-10"/></svg>');
+}
+
+/* Success/Check/Done (green) */
+.admon.success,
+.admon.check,
+.admon.done {
+    --callout-color: var(--callout-success);
+}
+.admon.success .admon-title::before,
+.admon.check .admon-title::before,
+.admon.done .admon-title::before {
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>');
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>');
+}
+
+/* Question/Help/FAQ (lime) */
+.admon.question,
+.admon.help,
+.admon.faq {
+    --callout-color: var(--callout-question);
+}
+.admon.question .admon-title::before,
+.admon.help .admon-title::before,
+.admon.faq .admon-title::before {
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>');
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>');
+}
+
+/* Warning/Caution/Attention (orange) */
+.admon.warning,
+.admon.caution,
+.admon.attention,
+aside.admon.warning,
+aside.admon.caution {
+    --callout-color: var(--callout-warning);
+}
+.admon.warning .admon-title::before,
+.admon.caution .admon-title::before,
+.admon.attention .admon-title::before {
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>');
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>');
+}
+
+/* Failure/Fail/Missing (red) */
+.admon.failure,
+.admon.fail,
+.admon.missing {
+    --callout-color: var(--callout-failure);
+}
+.admon.failure .admon-title::before,
+.admon.fail .admon-title::before,
+.admon.missing .admon-title::before {
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>');
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>');
+}
+
+/* Danger/Error (deep red) */
+.admon.danger,
+.admon.error {
+    --callout-color: var(--callout-danger);
+}
+.admon.danger .admon-title::before,
+.admon.error .admon-title::before {
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>');
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>');
+}
+
+/* Bug (pink red) */
+.admon.bug {
+    --callout-color: var(--callout-bug);
+}
+.admon.bug .admon-title::before {
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4m8-4v4M3 10h18M3 14h18M8 20h8M8 14h8v6H8z"/></svg>');
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4m8-4v4M3 10h18M3 14h18M8 20h8M8 14h8v6H8z"/></svg>');
+}
+
+/* Example (purple) */
+.admon.example {
+    --callout-color: var(--callout-example);
+}
+.admon.example .admon-title::before {
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>');
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>');
+}
+
+/* Quote/Cite (gray) */
+.admon.quote,
+.admon.cite {
+    --callout-color: var(--callout-quote);
+}
+.admon.quote .admon-title::before,
+.admon.cite .admon-title::before {
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>');
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>');
+}
+
+/* Nested lists and formatting inside callouts */
+.admon ul,
+.admon ol {
+    padding-left: 1.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.admon li {
+    margin: 0.25em 0;
+}
+
+.admon code {
+    background-color: rgba(var(--callout-color), 0.15);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.9em;
+}
+
+.admon pre {
+    background-color: rgba(var(--callout-color), 0.1);
+    padding: 1em;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+.admon strong {
+    font-weight: 700;
+    color: rgb(var(--callout-color));
+}
+
+/* Collapsible callouts (future enhancement) */
+.admon.collapsible .admon-title {
+    cursor: pointer;
+    user-select: none;
+}
+
+.admon.collapsible .admon-title::after {
+    content: "▼";
+    margin-left: auto;
+    font-size: 0.8em;
+    transition: transform 0.2s ease;
+}
+
+.admon.collapsible.collapsed .admon-title::after {
+    transform: rotate(-90deg);
+}
+
+.admon.collapsible.collapsed > *:not(.admon-title) {
+    display: none;
+}

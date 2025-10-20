@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project-specific
+*.log
+.env
+.claude
+CLAUDE.md
+# Test output
+test_output/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Trilium API tokens (security)
+run_test.sh
+run.bat
+*token*
+
+# Temporary files
+*.tmp
+*.bak
+*.orig
