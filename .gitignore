@@ -25,6 +25,7 @@ Thumbs.db
 # Project-specific
 *.log
 .env
+.env.test
 .claude
 CLAUDE.md
 # Test output
