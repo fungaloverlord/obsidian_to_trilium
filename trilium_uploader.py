@@ -30,6 +30,8 @@ class TriliumUploader:
         self.pending_relations: List[Tuple[str, str]] = []  # (source_note_id, target_title)
         # Track notes that need wiki link replacement in content
         self.notes_with_wiki_links: List[Tuple[str, str]] = []  # (note_id, html_content)
+        # Orphans note ID for placeholder notes
+        self.orphans_note_id: Optional[str] = None
 
     def upload_tree(self, root_node: FileNode, parent_note_id: str = "root") -> Dict[str, str]:
         """
@@ -46,6 +48,9 @@ class TriliumUploader:
         self.title_to_id_map.clear()
         self.pending_relations.clear()
         self.notes_with_wiki_links.clear()
+
+        # Create or find the Orphans note for placeholder notes
+        self.orphans_note_id = self._get_or_create_orphans_note(parent_note_id)
 
         # First pass: upload all notes
         self._upload_recursive(root_node, parent_note_id)
@@ -79,6 +84,52 @@ class TriliumUploader:
             note_id = self._create_markdown_note(node, parent_note_id)
             if note_id:
                 self.note_id_map[str(node.path)] = note_id
+
+    def _get_or_create_orphans_note(self, parent_note_id: str = "root") -> Optional[str]:
+        """
+        Get or create the Orphans note for placeholder notes.
+
+        Args:
+            parent_note_id: Parent note ID for the Orphans note (default: 'root')
+
+        Returns:
+            Orphans note ID or None if failed
+        """
+        # Search for existing Orphans note
+        try:
+            # Try to find an existing Orphans note
+            search_results = self.ea.search_notes("note.title = 'Orphans'")
+            if search_results and len(search_results) > 0:
+                orphans_id = search_results[0]['noteId']
+                print(f"📂 Found existing Orphans note (ID: {orphans_id})")
+                return orphans_id
+        except Exception as e:
+            print(f"  ⚠️  Could not search for Orphans note: {e}")
+
+        # Create new Orphans note if not found
+        note_data = {
+            "parentNoteId": parent_note_id,
+            "title": "Orphans",
+            "content": "<p>This note contains placeholder notes created for unresolved wiki links.</p>",
+            "type": "text"
+        }
+
+        try:
+            response = self.ea.create_note(**note_data)
+            if response and 'note' in response:
+                orphans_id = response['note']['noteId']
+
+                # Add readOnly label
+                self._add_readonly_label(orphans_id)
+
+                print(f"📂 Created Orphans note (ID: {orphans_id})")
+                return orphans_id
+            else:
+                print(f"  ⚠️  Failed to create Orphans note")
+                return None
+        except Exception as e:
+            print(f"  ⚠️  Error creating Orphans note: {e}")
+            return None
 
     def _add_readonly_label(self, note_id: str) -> bool:
         """
@@ -297,18 +348,26 @@ class TriliumUploader:
 
         return labels_added
 
-    def _create_placeholder_note(self, note_title: str, parent_note_id: str = "w2Gfa0leZdhV") -> Optional[str]:
+    def _create_placeholder_note(self, note_title: str, parent_note_id: Optional[str] = None) -> Optional[str]:
         """
         Create a placeholder note for a missing wiki link target.
 
         Args:
             note_title: Title of the note to create
-            parent_note_id: Parent note ID (default: w2Gfa0leZdhV)
-            parent_note_name: Trash
+            parent_note_id: Parent note ID (default: uses Orphans note)
 
         Returns:
             Created note ID or None if failed
         """
+        # Use Orphans note as parent if not specified
+        if parent_note_id is None:
+            parent_note_id = self.orphans_note_id
+
+        # Fallback to root if Orphans note creation failed
+        if parent_note_id is None:
+            parent_note_id = "root"
+            print(f"  ⚠️  Warning: Using 'root' as parent for placeholder note (Orphans note unavailable)")
+
         note_data = {
             "parentNoteId": parent_note_id,
             "title": note_title,

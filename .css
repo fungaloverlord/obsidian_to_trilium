@@ -1,3 +1,18 @@
+/*
+ * Trilium Note Metadata
+ *
+ * Title: custom
+ * Type: code (CSS)
+ * Labels: #appCss
+ *
+ * To use this in Trilium:
+ * 1. Create a new code note with type "CSS"
+ * 2. Set the title to "custom"
+ * 3. Add label #appCss (or #appCss=mobile for mobile-only)
+ * 4. Paste this entire file content
+ * 5. The CSS will automatically apply to all notes
+ */
+
 /* Root variables for colors - Obsidian-style callouts */
 :root {
     /* Obsidian callout colors */
