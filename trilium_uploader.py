@@ -32,6 +32,11 @@ class TriliumUploader:
         self.notes_with_wiki_links: List[Tuple[str, str]] = []  # (note_id, html_content)
         # Orphans note ID for placeholder notes
         self.orphans_note_id: Optional[str] = None
+        # Track upload statistics
+        self.notes_processed = 0
+        self.notes_created = 0
+        self.notes_failed = 0
+        self.failed_notes: List[str] = []  # Track names of failed notes
 
     def upload_tree(self, root_node: FileNode, parent_note_id: str = "root") -> Dict[str, str]:
         """
@@ -49,11 +54,31 @@ class TriliumUploader:
         self.pending_relations.clear()
         self.notes_with_wiki_links.clear()
 
+        # Reset statistics
+        self.notes_processed = 0
+        self.notes_created = 0
+        self.notes_failed = 0
+        self.failed_notes.clear()
+
         # Create or find the Orphans note for placeholder notes
         self.orphans_note_id = self._get_or_create_orphans_note(parent_note_id)
 
         # First pass: upload all notes
+        print(f"\n📤 Starting note upload...")
         self._upload_recursive(root_node, parent_note_id)
+
+        # Report statistics after upload
+        print(f"\n📊 Upload Statistics:")
+        print(f"   Processed: {self.notes_processed}")
+        print(f"   Created: {self.notes_created}")
+        print(f"   Failed: {self.notes_failed}")
+
+        if self.failed_notes:
+            print(f"\n⚠️  Failed notes:")
+            for failed_note in self.failed_notes[:10]:  # Show first 10
+                print(f"   - {failed_note}")
+            if len(self.failed_notes) > 10:
+                print(f"   ... and {len(self.failed_notes) - 10} more")
 
         # Second pass: update wiki link placeholders in content
         self._update_wiki_link_content()
@@ -165,6 +190,8 @@ class TriliumUploader:
         Returns:
             Created note ID or None if failed
         """
+        self.notes_processed += 1
+
         note_data = {
             "parentNoteId": parent_note_id,
             "title": node.title,
@@ -180,14 +207,19 @@ class TriliumUploader:
                 # Add readOnly label
                 self._add_readonly_label(note_id)
 
+                self.notes_created += 1
                 print(f"✅ Created folder note: {node.name} (ID: {note_id})")
                 return note_id
             else:
+                self.notes_failed += 1
+                self.failed_notes.append(f"[FOLDER] {node.name}")
                 print(f"❌ Failed to create folder note: {node.name}")
                 print(f"   Response: {response}")
                 print(f"   Parent ID: {parent_note_id}")
                 return None
         except Exception as e:
+            self.notes_failed += 1
+            self.failed_notes.append(f"[FOLDER] {node.name}")
             print(f"❌ Error creating folder note {node.name}: {e}")
             print(f"   Parent ID: {parent_note_id}")
             import traceback
@@ -205,6 +237,8 @@ class TriliumUploader:
         Returns:
             Created note ID or None if failed
         """
+        self.notes_processed += 1
+
         try:
             # Convert Markdown to HTML and extract frontmatter and wiki links
             html_content, frontmatter, wiki_links = self.converter.convert_file(str(node.path))
@@ -243,6 +277,8 @@ class TriliumUploader:
                 if frontmatter:
                     labels_count = self._add_labels_from_frontmatter(note_id, frontmatter)
 
+                self.notes_created += 1
+
                 # Build status message
                 extras = []
                 if labels_count:
@@ -257,10 +293,19 @@ class TriliumUploader:
 
                 return note_id
             else:
+                self.notes_failed += 1
+                self.failed_notes.append(node.title)
                 print(f"❌ Failed to create note: {node.title}")
+                print(f"   Response: {response}")
+                print(f"   Parent ID: {parent_note_id}")
                 return None
         except Exception as e:
+            self.notes_failed += 1
+            self.failed_notes.append(node.title)
             print(f"❌ Error creating note {node.title}: {e}")
+            print(f"   Parent ID: {parent_note_id}")
+            import traceback
+            traceback.print_exc()
             return None
 
     def _extract_labels(self, frontmatter: Dict[str, Any]) -> List[str]:
